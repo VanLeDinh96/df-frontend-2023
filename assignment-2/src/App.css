@@ -1,38 +1,88 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.toolbar {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 0.5rem;
+  height: 2.3rem;
 }
 
-.App-link {
-  color: #61dafb;
+.toolbar input {
+  min-width: 300px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.toolbar > * {
+  height: 100%;
+}
+
+.main-content {
+  width: 100%;
+  color: var(--black-color);
+  margin: 1rem 0;
+  table-layout: fixed;
+}
+
+.main-content th {
+  text-align: left;
+}
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.pagination .btn {
+  border: 1px solid var(--secondary-color-1);
+  border-radius: 0;
+  background-color: var(--secondary-color);
+  color: var(--black-color);
+  padding: 0.5rem 0.7rem;
+}
+
+.pagination .btn.active {
+  background-color: var(--secondary-color-5);
+  font-weight: 700;
+  color: #2b3844;
+}
+
+.dark-mode-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+.toggle-switch {
+  width: 45px;
+  height: 25px;
+
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 3px;
+}
+
+.slider {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.toggle-switch.on {
+  background-color: var(--primary-color);
+}
+
+.toggle-switch.off {
+  background-color: #ccc;
+}
+
+.toggle-switch.on .slider {
+  transform: translateX(19px);
 }
