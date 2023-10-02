@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { calculatePages, filterData } from '../../utils/paginationUtils'
 import AddDialog from '../add-dialog/AddDialog'
 import ConfirmDialog from '../confirm-dialog/ConfirmDialog'
 
@@ -12,14 +13,15 @@ type Book = {
 
 const dataKey = 'bookList'
 const limit = 10
-let action: Action | null, selectedItem: Book | null
+let action: Action | null
+let selectedItem: Book | null
+let total = 0
 
 const Dashboard: React.FC = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false)
   const [data, setData] = useState<Book[]>([])
   const [searchKey, setSearchKey] = useState<string>('')
   const [page, setPage] = useState<number>(0)
-  const [total, setTotal] = useState<number>(0)
 
   useEffect(() => {
     try {
@@ -34,8 +36,8 @@ const Dashboard: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    calculatePages()
-  }, [data, searchKey])
+    total = calculatePages(data, searchKey)
+  })
 
   const openModal = (selectedAction: Action, item: Book | null) => {
     selectedItem = item
@@ -51,7 +53,8 @@ const Dashboard: React.FC = () => {
   const renderModal = () => {
     if (action === 'CREATE') {
       return <AddDialog close={closeModal} addItem={addItem} />
-    } else if (action === 'DELETE') {
+    }
+    if (action === 'DELETE') {
       return (
         <ConfirmDialog
           item={selectedItem || { name: '', author: '', topic: '' }}
@@ -59,9 +62,8 @@ const Dashboard: React.FC = () => {
           deleteItem={deleteItem}
         />
       )
-    } else {
-      return null
     }
+    return null
   }
 
   const updateData = (newData: Book[]) => {
@@ -92,20 +94,8 @@ const Dashboard: React.FC = () => {
     setIsOpen(false)
   }
 
-  const filterData = () => {
-    return data.filter((i) =>
-      i.name.toLowerCase().includes(searchKey.toLowerCase()),
-    )
-  }
-
-  const calculatePages = () => {
-    const filteredData = filterData()
-    const numberOfPages = Math.ceil(filteredData.length / limit)
-    setTotal(numberOfPages)
-  }
-
   const renderItems = () => {
-    const filteredData = filterData()
+    const filteredData = filterData(data, searchKey)
     const pagedData = filteredData.slice(page * limit, (page + 1) * limit)
     return pagedData.map((i) => {
       return (
